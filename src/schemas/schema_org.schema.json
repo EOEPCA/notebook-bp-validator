@@ -1,0 +1,87 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Schema.org CreativeWork Metadata",
+  "type": "object",
+  "properties": {
+    "identifier": {
+      "type": "string",
+      "description": "Identifier of the notebook."
+    },
+    "author": {
+      "description": "Author or authors of the notebook.",
+      "oneOf": [
+        {
+          "$ref": "schema:Person"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "schema:Person"
+          }
+        }
+      ]
+    },
+    "name": {
+      "type": "string",
+      "description": "Title of the notebook."
+    },
+    "description": {
+      "type": "string",
+      "description": "Short description of the notebook content."
+    },
+    "image": {
+      "$ref": "schema:URL",
+      "description": "Link to a thumbnail image (400x250 px) for the notebook."
+    },
+    "potentialAction": {
+      "type": "array",
+      "description": "Services or environments where the notebook can be launched or viewed.",
+      "items": {
+        "$ref": "schema:Action"
+      }
+    },
+    "keywords": {
+      "type": "array",
+      "description": "Keywords that include controlled vocabulary terms and free text.",
+      "items": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "$ref": "schema:DefinedTerm"
+          }
+        ]
+      }
+    },
+    "domain": {
+      "$ref": "schema:DefinedTerm"
+    },
+    "platform": {
+      "$ref": "schema:DefinedTerm"
+    },
+    "instruments": {
+      "$ref": "schema:DefinedTerm"
+    },
+    "tags": {
+      "type": "string"
+    },
+    "license": {
+      "description": "URL or SPDX identifier of the license.",
+      "anyOf": [
+        {
+          "$ref": "schema:URL"
+        },
+        {
+          "type": "string"
+        }
+      ]
+    }
+  },
+  "required": [
+    "author",
+    "name",
+    "description",
+    "keywords"
+  ]
+}
