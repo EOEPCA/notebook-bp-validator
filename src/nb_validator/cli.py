@@ -2,7 +2,7 @@ import argparse
 import sys
 import json
 
-from validator import validate_notebooks
+from nb_validator import validate_notebooks
 
 def main():
     parser = argparse.ArgumentParser(

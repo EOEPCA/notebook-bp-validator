@@ -25,11 +25,36 @@ Each object contains:
 
 ## Install
 
+To install from source, clone the repo and use `pip` as follows:
+
 ```sh
+git clone https://github.com/EOEPCA/notebook-bp-validator.git
+cd notebook-bp-validator
 pip install .
+```
+## Use as a Library
+
+```py
+#!/usr/bin/env python
+
+import json
+from nb_validator import validate_notebooks
+
+INPUTS_FILELIST = [
+    "tests/notebooks/00_General_information_about_Jupyter_Lab.ipynb",
+    "tests/notebooks/00.ipynb",
+]
+INPUTS_SCHEMA = "schema.org"
+
+if __name__ == "__main__":
+    result = validate_notebooks(INPUTS_FILELIST, INPUTS_SCHEMA)
+    print(json.dumps(result, indent=4))
 ```
 
 ## CLI
+
+After the installation, use the command line tool `nb-validator`: 
+
 ```
 usage: nb-validator [-h] -s SCHEMA [-p] files [files ...]
 
@@ -42,4 +67,57 @@ options:
   -h, --help            show this help message and exit
   -s SCHEMA, --schema SCHEMA
                         Supported values: 'eumetsat' or 'schema.org'.
-  -p, --abspath         Uses absolute paths in output.```
+  -p, --abspath         Uses absolute paths in output.
+```
+
+## Example output
+
+```json
+[
+  {
+    "filename": "tests/notebooks/00.ipynb",
+    "schema": "eumetsat",
+    "valid": false,
+    "missing_mandatory_fields": [
+      "services",
+      "title"
+    ],
+    "missing_optional_fields": [],
+    "schema_validation_errors": [
+      {
+        "path": [],
+        "validator": "required",
+        "message": "'title' is a required property"
+      },
+      {
+        "path": [],
+        "validator": "required",
+        "message": "'services' is a required property"
+      },
+      {
+        "path": [
+          "author"
+        ],
+        "validator": "type",
+        "message": "{'givenName': 'John', 'familyName': 'Doe'} is not of type 'string'"
+      },
+      {
+        "path": [
+          "tags"
+        ],
+        "validator": "type",
+        "message": "'' is not of type 'object'"
+      }
+    ]
+  },
+  {
+    "filename": "tests/notebooks/00_General_information_about_Jupyter_Lab.ipynb",
+    "schema": "eumetsat",
+    "valid": true,
+    "missing_optional_fields": [
+      "image",
+      "tags"
+    ]
+  }
+]
+```

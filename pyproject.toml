@@ -6,7 +6,7 @@ authors = [{ name = "Hugo Cremers", email = "hugo.cremers@spaceapplications.com"
 dependencies = ["jsonschema", "referencing"]
 
 [project.scripts]
-nb-validator = "validator.cli:main"
+nb-validator = "nb_validator.cli:main"
 
 [build-system]
 requires = ["setuptools>=61"]
