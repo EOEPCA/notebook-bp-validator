@@ -5,10 +5,12 @@ import re
 import sys
 import json
 import urllib.request
+import importlib.resources
 
 from jsonschema import Draft7Validator
 from referencing import Registry, Resource
 from referencing.exceptions import Unresolvable
+from nb_validator import schemas
 
 def _add_schema_org_schema_to_registry(schema_name: str, registry: Registry) -> Registry:
     print(f"Adding '{schema_name}' to registry", file=sys.stderr)
@@ -59,14 +61,14 @@ def validate_notebook(
     metadata = notebook["metadata"]
 
     if encoding.lower() == "eumetsat":
-        with open("src/schemas/eumetsat.schema.json") as f:
+        with importlib.resources.files(schemas).joinpath("eumetsat.schema.json").open("r") as f:
             schema = json.load(f)
         validator = Draft7Validator(schema)
         errors = sorted(validator.iter_errors(metadata), key=lambda e: e.path)  # returns an Iterable of ValidationErrors
     elif encoding.lower() == "schema.org":
         # if not registry:
         registry = _init_registry_with_string_types()
-        with open("src/schemas/schema_org.schema.json") as f:
+        with importlib.resources.files(schemas).joinpath("schema_org.schema.json").open("r") as f:
             schema = json.load(f)
         while True:
             try:

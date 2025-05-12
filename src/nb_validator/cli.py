@@ -35,5 +35,5 @@ def main():
     try:
         print(json.dumps(validate_notebooks(args.files, args.schema, args.abspath), indent=4))
     except Exception as e:
-        print(f"Error: {e}", file=sys.stderr)
-        sys.exit(1)
+        print(json.dumps({"error": str(e)}, indent=4))
+        # sys.exit(1)
